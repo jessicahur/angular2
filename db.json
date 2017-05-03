@@ -26,7 +26,7 @@
       "id": 1,
       "make": "ford",
       "model": "sport",
-      "color": "red",
+      "color": "Red",
       "year": 2016,
       "price": 60000
     },
@@ -45,6 +45,14 @@
       "year": "2017",
       "price": "90000",
       "id": 4
+    },
+    {
+      "make": "Weird",
+      "model": "Wied",
+      "color": "dfds",
+      "year": "2001",
+      "price": "10000",
+      "id": 5
     }
   ],
   "owners": [

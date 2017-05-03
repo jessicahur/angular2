@@ -40,6 +40,13 @@ export abstract class ModelsService<T extends Model> {
             .map( ( res ) => res.json() );
     }
 
+    public replace( data: T ) {
+        console.log(data);
+        return this.http.put( `${this.baseURL}/${data.id}`, JSON.stringify(data), {
+            headers: new Headers( { "Content-Type": "application/json" } ),
+        } ).map( ( res ) => res.json() );
+    }
+
     // const indexToSlice = this.models.findIndex( ( model: T ) => model.id === modelId );
     // this.models        = [ ...this.models.slice( 0, indexToSlice ), ...this.models.slice( indexToSlice + 1 ) ];
 }

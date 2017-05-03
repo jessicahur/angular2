@@ -1,0 +1,6 @@
+<td><input type="text" [(ngModel)]="newCar.make"></td>
+<td><input type="text" [(ngModel)]="newCar.model"></td>
+<td><input type="text" [(ngModel)]="newCar.year"></td>
+<td><input type="text" [(ngModel)]="newCar.color"></td>
+<td><input type="text" [(ngModel)]="newCar.price"></td>
+<td><span (click)="updateCar(newCar)">Save</span> <span (click)="cancelEdit()">Cancel</span></td>

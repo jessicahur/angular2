@@ -13,66 +13,20 @@ import { SortOrder } from "../enum/sort-order";
         <table>
             <thead>
                 <tr>
-                    <th (click)="sortByCol('make')">
-                        Make
-                        <span *ngIf="sortColName === 'make'">
-                            <img *ngIf="sortOrder === 0"
-                                src="https://maxcdn.icons8.com/Android_L/PNG/24/Arrows/sort_down-24.png"
-                                title="Sort Down" width="24" height="24">
-                            <img *ngIf="sortOrder === 1"
-                                src="https://maxcdn.icons8.com/Android_L/PNG/24/Arrows/sort_up-24.png"
-                                title="Sort Up" width="24" height="24">
-                        </span>
-                    </th>
-                    <th (click)="sortByCol('model')">
-                        Model
-                        <span *ngIf="sortColName === 'model'">
-                            <img *ngIf="sortOrder === 0"
-                                src="https://maxcdn.icons8.com/Android_L/PNG/24/Arrows/sort_down-24.png"
-                                title="Sort Down" width="24" height="24">
-                            <img *ngIf="sortOrder === 1"
-                                src="https://maxcdn.icons8.com/Android_L/PNG/24/Arrows/sort_up-24.png"
-                                title="Sort Up" width="24" height="24">
-                        </span>
-                    </th>
-                    <th (click)="sortByCol('year')">
-                        Year
-                        <span *ngIf="sortColName === 'year'">
-                            <img *ngIf="sortOrder === 0"
-                                src="https://maxcdn.icons8.com/Android_L/PNG/24/Arrows/sort_down-24.png"
-                                title="Sort Down" width="24" height="24">
-                            <img *ngIf="sortOrder === 1"
-                                src="https://maxcdn.icons8.com/Android_L/PNG/24/Arrows/sort_up-24.png"
-                                title="Sort Up" width="24" height="24">
-                        </span>
-                    </th>
-                    <th (click)="sortByCol('color')">
-                        Color
-                        <span *ngIf="sortColName === 'color'">
-                            <img *ngIf="sortOrder === 0"
-                                src="https://maxcdn.icons8.com/Android_L/PNG/24/Arrows/sort_down-24.png"
-                                title="Sort Down" width="24" height="24">
-                            <img *ngIf="sortOrder === 1"
-                                src="https://maxcdn.icons8.com/Android_L/PNG/24/Arrows/sort_up-24.png"
-                                title="Sort Up" width="24" height="24">
-                        </span>
-                    </th>
-                    <th (click)="sortByCol('price')">
-                        Price
-                        <span *ngIf="sortColName === 'price'">
-                            <img *ngIf="sortOrder === 0"
-                                src="https://maxcdn.icons8.com/Android_L/PNG/24/Arrows/sort_down-24.png"
-                                title="Sort Down" width="24" height="24">
-                            <img *ngIf="sortOrder === 1"
-                                src="https://maxcdn.icons8.com/Android_L/PNG/24/Arrows/sort_up-24.png"
-                                title="Sort Up" width="24" height="24">
-                        </span>
-                    </th>
+                    <th *ngFor="let col of cols" (click)="sortByCol(col.field)" [headerCol]="col.name" 
+                    [isColSorted]="sortColName === col.field"
+                    [sortOrder]="sortOrder"></th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <tr car-table-item *ngFor="let theCar of sortedCars" [car]="theCar" (onDeleteCar)="deleteCar($event)"></tr>
+            <ng-template ngFor let-theCar [ngForOf]="sortedCars">
+                <tr *ngIf="editRow!==theCar.id" car-table-item [car]="theCar" (onDeleteCar)="deleteCar($event)"
+                (click)="editRow=theCar.id"></tr>
+                <tr *ngIf="editRow===theCar.id" car-table-edit-item [car]="theCar" 
+                (onSaveCar)="replaceCar($event)"
+                (onCancel)="editRow=-1"></tr>
+            </ng-template>
             </tbody>
         </table>
         <button (click)="addNewCar()">Add New Car</button>
@@ -81,7 +35,14 @@ import { SortOrder } from "../enum/sort-order";
 
 export class CarTableComponent {
 
-    public cars: Car[] = [];
+    public cols                 = [
+        { name: "Make", field: "make" },
+        { name: "Model", field: "model" },
+        { name: "Year", field: "year" },
+        { name: "Color", field: "color" },
+        { name: "Price", field: "price" },
+    ];
+    public cars: Car[]          = [];
     public sortColName: string  = "";
     public sortOrder: SortOrder = SortOrder.Ascending;
     public lastCars: Car[]      = null;
@@ -92,17 +53,28 @@ export class CarTableComponent {
     }
 
     public ngOnInit() {
-        this.carsSvc.getAll().subscribe((cars) => {
+        this.carsSvc.getAll().subscribe( ( cars ) => {
             this.cars = cars;
+        } );
+    }
+
+    public editRow:number;
+
+    public replaceCar(car: Car) {
+        this.carsSvc.replace(car).subscribe( () => {
+            this.carsSvc.getAll().subscribe( ( cars ) => {
+                this.cars = cars;
+            } );
+            this.editRow = -1;
         });
     }
 
     public deleteCar( carId: number ) {
-        this.carsSvc.delete( carId ).subscribe(() => {
-            this.carsSvc.getAll().subscribe((cars) => {
+        this.carsSvc.delete( carId ).subscribe( () => {
+            this.carsSvc.getAll().subscribe( ( cars ) => {
                 this.cars = cars;
-            });
-        });
+            } );
+        } );
     }
 
     public sortByCol( colName: string ) {
