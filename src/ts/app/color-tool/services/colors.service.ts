@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Http } from "@angular/http";
 
 import { Color } from "../models/colors";
 import { ModelsService } from "../../_shared/services/models.service";
@@ -13,4 +14,8 @@ export class ColorsService extends ModelsService<Color> {
     //         { id: 3, name: "blue", hex: "#0000FF" },
     //     ] );
     // }
+
+    constructor( http: Http ) {
+        super( http, "http://localhost:3010/colors" );
+    }
 }

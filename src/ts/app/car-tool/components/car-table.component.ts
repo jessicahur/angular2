@@ -1,5 +1,6 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+
 
 import { Car } from "../models/car";
 import { CarsService } from "../services/cars.service";
@@ -89,18 +90,28 @@ import { SortOrder } from "../enum/sort-order";
 
 export class CarTableComponent {
 
+    public cars: Car[] = [];
     public sortColName: string  = "";
     public sortOrder: SortOrder = SortOrder.Ascending;
     public lastCars: Car[]      = null;
     public theSortedCars: Car[] = [];
 
-    constructor( private cars: CarsService,
+    constructor( private carsSvc: CarsService,
                  private router: Router ) {
-        this.cars.getAll();
+    }
+
+    public ngOnInit() {
+        this.carsSvc.getAll().subscribe((cars) => {
+            this.cars = cars;
+        });
     }
 
     public deleteCar( carId: number ) {
-        this.cars.delete( carId );
+        this.carsSvc.delete( carId ).subscribe(() => {
+            this.carsSvc.getAll().subscribe((cars) => {
+                this.cars = cars;
+            });
+        });
     }
 
     public sortByCol( colName: string ) {
@@ -121,29 +132,27 @@ export class CarTableComponent {
 
     public get sortedCars() {
 
-        return [] as Car[];
+        if ( this.lastCars !== this.cars ) {
+            this.theSortedCars = this.cars.concat().sort( ( a: Car, b: Car ) => {
+                const aValue = a[ this.sortColName ];
+                const bValue = b[ this.sortColName ];
 
-        // if ( this.lastCars !== this.cars.getAll() ) {
-        //     this.theSortedCars = this.cars.getAll().concat().sort( ( a: Car, b: Car ) => {
-        //         const aValue = a[ this.sortColName ];
-        //         const bValue = b[ this.sortColName ];
-        //
-        //         if ( aValue === bValue ) {
-        //             return 0;
-        //         } else {
-        //             if ( this.sortOrder === SortOrder.Ascending ) {
-        //                 return aValue < bValue ? - 1 : 1;
-        //             } else {
-        //                 return aValue > bValue ? - 1 : 1;
-        //             }
-        //         }
-        //
-        //     } );
-        //
-        //     this.lastCars = this.cars.getAll();
-        // }
-        //
-        // return this.theSortedCars;
+                if ( aValue === bValue ) {
+                    return 0;
+                } else {
+                    if ( this.sortOrder === SortOrder.Ascending ) {
+                        return aValue < bValue ? - 1 : 1;
+                    } else {
+                        return aValue > bValue ? - 1 : 1;
+                    }
+                }
+
+            } );
+
+            this.lastCars = this.cars;
+        }
+
+        return this.theSortedCars;
     }
 
     public addNewCar() {

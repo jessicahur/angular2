@@ -1,5 +1,7 @@
 import { Injectable } from "@angular/core";
-import { Http } from "@angular/http";
+import { Http, Headers } from "@angular/http";
+
+import { Observable } from "rxjs";
 
 import { Model } from "../models/model";
 
@@ -16,12 +18,9 @@ export abstract class ModelsService<T extends Model> {
     constructor( private http: Http, private baseURL: string ) {
     }
 
-    public getAll() {
+    public getAll(): Observable<T[]> {
 
-        this.http.get(this.baseURL).map((res) => res.json()).subscribe((results) => { // because of rxjs
-            console.log(results);
-        });
-        return this.models;
+        return this.http.get( this.baseURL ).map( ( res ) => res.json() ); // from rxjs
     }
 
     public getById( modelId: number ) {
@@ -30,14 +29,18 @@ export abstract class ModelsService<T extends Model> {
 
     public append( newModel: T ) {
 
-        newModel.id = this.models.reduce( ( maxId: number, nextModel: T ) =>
-                Math.max( maxId, nextModel.id ), 0 ) + 1;
-
-        this.models = this.models.concat( newModel );
+        return this.http.post( this.baseURL, JSON.stringify( newModel ), {
+            headers: new Headers( { "Content-Type": "application/json" } ),
+        } ).map( ( res ) => res.json() );
     }
 
     public delete( modelId: number ) {
-        const indexToSlice = this.models.findIndex( ( model: T ) => model.id === modelId );
-        this.models        = [ ...this.models.slice( 0, indexToSlice ), ...this.models.slice( indexToSlice + 1 ) ];
+
+        return this.http.delete( `${this.baseURL}/${modelId}` )
+            .map( ( res ) => res.json() );
     }
+
+    // const indexToSlice = this.models.findIndex( ( model: T ) => model.id === modelId );
+    // this.models        = [ ...this.models.slice( 0, indexToSlice ), ...this.models.slice( indexToSlice + 1 ) ];
 }
+

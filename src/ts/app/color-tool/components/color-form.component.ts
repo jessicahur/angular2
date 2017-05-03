@@ -27,16 +27,17 @@ export class ColorFormComponent {
     } as Color;
 
     constructor(
-        private colors: ColorsService,
+        private colorsSvc: ColorsService,
         private router: Router,
     ) { }
 
     public addColor() {
-        this.colors.append(this.newColor);
+        this.colorsSvc.append(this.newColor).subscribe(() => {
+            this.router.navigate(["color-tool"]);
+        });
         this.newColor = {
             hex: "#000000",
         } as Color;
-        this.router.navigate(["color-tool"]);
     }
 
 }

@@ -36,13 +36,14 @@ export class CarFormComponent {
     public newCar: Car = {} as Car;
 
     constructor(
-        private cars: CarsService,
+        private carsSvc: CarsService,
         private router: Router,
     ) {
     }
 
     public addCar() {
-        this.cars.append( this.newCar );
-        this.router.navigate(["car-tool"]);
+        this.carsSvc.append(this.newCar).subscribe(() => {
+            this.router.navigate(["car-tool"]);
+        });
     }
 }
