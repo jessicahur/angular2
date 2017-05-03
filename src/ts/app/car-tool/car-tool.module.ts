@@ -8,12 +8,13 @@ import { carToolRouterModule } from "./car-tool.router";
 import { CarToolComponent } from "./components/car-tool.component";
 import { CarTableComponent } from "./components/car-table.component";
 import { CarFormComponent } from "./components/car-form.component";
+import {CarTableItemComponent} from "./components/car-table-item/car-table-item.component";
 
 import { YoPipe } from "./pipes/yo.pipe";
 
 @NgModule( {
     imports     : [ CommonModule, FormsModule, HttpModule, carToolRouterModule ],
-    declarations: [ CarToolComponent, YoPipe, CarTableComponent, CarFormComponent ],
+    declarations: [ CarToolComponent, YoPipe, CarTableComponent, CarFormComponent, CarTableItemComponent ],
     exports     : [ CarToolComponent ], // only exports major components so that other ngmodules can reference to this
 } )
 

@@ -72,16 +72,7 @@ import { SortOrder } from "../enum/sort-order";
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let car of sortedCars">
-                    <td>{{car.make | titlecase}}</td>
-                    <td>{{car.model | titlecase}}</td>
-                    <td>{{car.year | yo}}</td>
-                    <td>{{car.color | titlecase}}</td>
-                    <td>{{car.price | currency:'USD':true:'1.2-2'}}</td>
-                    <td><img (click)="deleteCar(car.id)"
-                        src="https://maxcdn.icons8.com/Color/PNG/24/User_Interface/delete_sign-24.png"
-                        title="Delete" width="24" height="24"></td>
-                </tr>
+                <tr car-table-item *ngFor="let theCar of sortedCars" [car]="theCar" (onDeleteCar)="deleteCar($event)"></tr>
             </tbody>
         </table>
         <button (click)="addNewCar()">Add New Car</button>

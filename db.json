@@ -39,14 +39,6 @@
       "price": 30000
     },
     {
-      "make": "Honda",
-      "model": "Accord",
-      "color": "Red",
-      "year": "2009",
-      "price": "20000",
-      "id": 3
-    },
-    {
       "make": "Tesla",
       "model": "S3",
       "color": "Black",
