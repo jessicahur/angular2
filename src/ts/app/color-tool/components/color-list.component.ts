@@ -8,17 +8,14 @@ import { ColorsService } from "../services/colors.service";
     selector: "color-list",
     template: `
         <ul>
-            <li *ngFor="let color of sortedColors" >
-                {{color.name | titlecase}} - {{color.hex}}
-                <img (click)="deleteColor(color.id)"
-                    src="https://maxcdn.icons8.com/Color/PNG/24/User_Interface/delete_sign-24.png"
-                    title="Delete" width="24" height="24">
-            </li>
+            <li color-list-item *ngFor="let theColor of sortedColors" [color]="theColor" 
+            (onDeleteColor)="deleteColor($event)"></li>
         </ul>
         <button (click)="createNewColor()">New Color</button>
         <a routerLink="/color-tool/color-form">Create New Color</a>
     `,
 } )
+// listen to the event named onDeleteColor to execute deleteColor($event)
 export class ColorListComponent implements OnInit {
 
     public colors: Color[] = [];

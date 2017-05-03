@@ -14,6 +14,11 @@
       "id": 3,
       "name": "blue",
       "hex": "#0000FF"
+    },
+    {
+      "hex": "#ffffff",
+      "name": "White",
+      "id": 4
     }
   ],
   "cars": [
@@ -32,6 +37,22 @@
       "color": "black",
       "year": 2010,
       "price": 30000
+    },
+    {
+      "make": "Honda",
+      "model": "Accord",
+      "color": "Red",
+      "year": "2009",
+      "price": "20000",
+      "id": 3
+    },
+    {
+      "make": "Tesla",
+      "model": "S3",
+      "color": "Black",
+      "year": "2017",
+      "price": "90000",
+      "id": 4
     }
   ],
   "owners": [
