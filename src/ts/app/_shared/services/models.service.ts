@@ -1,17 +1,26 @@
 import { Injectable } from "@angular/core";
+import { Http } from "@angular/http";
 
 import { Model } from "../models/model";
 
 @Injectable() // optional, allows defining a class that can be received via DI
 
 export abstract class ModelsService<T extends Model> {
-    protected models: T[] = [];
 
-    constructor(initialModels: T[]) {
-        this.models = initialModels.concat();
+    protected models: T[] = []; // not accessible by the world but by subclasses
+
+    // constructor(initialModels: T[]) {
+    //     this.models = initialModels.concat();
+    // }
+
+    constructor( private http: Http, private baseURL: string ) {
     }
 
     public getAll() {
+
+        this.http.get(this.baseURL).map((res) => res.json()).subscribe((results) => { // because of rxjs
+            console.log(results);
+        });
         return this.models;
     }
 

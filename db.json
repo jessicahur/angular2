@@ -1,4 +1,30 @@
 {
+    "cars": [
+        {
+            "id"   : 1,
+            "make" : "ford",
+            "model": "sport",
+            "color": "red",
+            "year" : 2016,
+            "price": 60000
+        },
+        {
+            "id"   : 2,
+            "make" : "toyota",
+            "model": "prius",
+            "color": "black",
+            "year" : 2010,
+            "price": 30000
+        },
+        {
+            "id"   : 3,
+            "make" : "honda",
+            "model": "accord",
+            "color": "silver",
+            "year" : 2009,
+            "price": 15000
+        }
+    ],
   "owners": [
     {
       "id": 1,

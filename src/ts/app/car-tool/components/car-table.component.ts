@@ -95,7 +95,8 @@ export class CarTableComponent {
     public theSortedCars: Car[] = [];
 
     constructor( private cars: CarsService,
-                 private router: Router, ) {
+                 private router: Router ) {
+        this.cars.getAll();
     }
 
     public deleteCar( carId: number ) {
@@ -120,27 +121,29 @@ export class CarTableComponent {
 
     public get sortedCars() {
 
-        if ( this.lastCars !== this.cars.getAll() ) {
-            this.theSortedCars = this.cars.getAll().concat().sort( ( a: Car, b: Car ) => {
-                const aValue = a[ this.sortColName ];
-                const bValue = b[ this.sortColName ];
+        return [] as Car[];
 
-                if ( aValue === bValue ) {
-                    return 0;
-                } else {
-                    if ( this.sortOrder === SortOrder.Ascending ) {
-                        return aValue < bValue ? - 1 : 1;
-                    } else {
-                        return aValue > bValue ? - 1 : 1;
-                    }
-                }
-
-            } );
-
-            this.lastCars = this.cars.getAll();
-        }
-
-        return this.theSortedCars;
+        // if ( this.lastCars !== this.cars.getAll() ) {
+        //     this.theSortedCars = this.cars.getAll().concat().sort( ( a: Car, b: Car ) => {
+        //         const aValue = a[ this.sortColName ];
+        //         const bValue = b[ this.sortColName ];
+        //
+        //         if ( aValue === bValue ) {
+        //             return 0;
+        //         } else {
+        //             if ( this.sortOrder === SortOrder.Ascending ) {
+        //                 return aValue < bValue ? - 1 : 1;
+        //             } else {
+        //                 return aValue > bValue ? - 1 : 1;
+        //             }
+        //         }
+        //
+        //     } );
+        //
+        //     this.lastCars = this.cars.getAll();
+        // }
+        //
+        // return this.theSortedCars;
     }
 
     public addNewCar() {

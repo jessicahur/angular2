@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
+import { HttpModule } from "@angular/http";
 
 import { carToolRouterModule } from "./car-tool.router";
 
@@ -11,7 +12,7 @@ import { CarFormComponent } from "./components/car-form.component";
 import { YoPipe } from "./pipes/yo.pipe";
 
 @NgModule( {
-    imports     : [ CommonModule, FormsModule, carToolRouterModule ],
+    imports     : [ CommonModule, FormsModule, HttpModule, carToolRouterModule ],
     declarations: [ CarToolComponent, YoPipe, CarTableComponent, CarFormComponent ],
     exports     : [ CarToolComponent ], // only exports major components so that other ngmodules can reference to this
 } )
