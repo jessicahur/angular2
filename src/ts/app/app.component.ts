@@ -49,7 +49,7 @@ export class PhoneValidatorDirective {
 <fieldset ngModelGroup="contactDetails">
     <div>
             <label for="email-name-input">Email:</label>
-        <input #emailInput="ngModel" type="email" id="email-name-input" name="emailInput" [(ngModel)]="person.email" email required>
+        <input #emailInput="ngModel" type="email" id="email-name-input" name="emailInput" [(ngModel)]="person.email" email>
         <span *ngIf="emailInput.invalid">
             <span *ngIf="emailInput.errors.required">Email is required.</span>
             <span *ngIf="!emailInput.errors.required && emailInput.errors.email">Email is invalid.</span>
@@ -61,14 +61,34 @@ export class PhoneValidatorDirective {
         <input #phoneInput="ngModel" type="tel" id="phone-input" name="phoneInput" [(ngModel)]="person.phone">
         <span>Phone is invalid.</span>
     </div>
+    <div class="center-me">
+        <label for="preferred-contact-method-select">
+            Preferred Contact Method:
+        </label>
+        <select id="preferred-contact-method-select"
+        [(ngModel)]="preferredContactMethod" 
+        name="preferredContactMethodSelect" size="4" required>
+            <option *ngFor="let contactMethod of contactMethods" [value]="contactMethod.code">
+                {{contactMethod.caption}}
+            </option>
+        </select>
+        <span>This is required.</span>
+    </div>
 </fieldset>
+    <div class="center-me">
+        <label for="comments-textarea">Comment:</label>
+        <textarea id="comments-textarea" [(ngModel)]="person.comments" name="commentsTextarea"></textarea>
+    </div>
+
 <button (click)="savePerson()">Save Person</button>
 </form>
 `,
     styles  : [
-        "input.ng-invalid.ng-touched:not(:focus) { border: 1px solid red;}",
-        "input ~ span { display: none;}",
-        "input.ng-invalid.ng-touched ~ span { display: inline;}",
+        "input.ng-invalid.ng-touched:not(:focus),select.ng-invalid.ng-touched:not(:focus) { border: 1px solid red;}",
+        "input.ng-invalid.ng-touched ~ span, select.ng-invalid.ng-touched ~ span { display: inline;}",
+        "input ~ span, select ~ span { display: none;}",
+        // "select { vertical-align: middle;}",
+        ".center-me { display: flex; align-items:middle;}",
     ],
 } )
 export class AppComponent implements AfterViewInit {
@@ -80,6 +100,11 @@ export class AppComponent implements AfterViewInit {
         firstName: "",
         lastName : "",
     };
+
+    public contactMethods = [
+        { code: "EMAIL", caption: "Email" },
+        { code: "PHONE", caption: "Phone" },
+    ];
 
     public ngAfterViewInit() {
         console.log( this.personForm );
