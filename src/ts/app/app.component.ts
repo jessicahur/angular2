@@ -28,6 +28,7 @@ const phoneValidator = ( c: FormControl ) => {
 export class PhoneValidatorDirective {
 }
 
+// Contact Method Validation =======================
 const preferredContactMethodValidator = ( g: FormGroup ) => {
 
     if ( ! g.controls.preferredContactMethodSelect ) { // make sure that this box is present
@@ -62,6 +63,7 @@ const preferredContactMethodValidator = ( g: FormGroup ) => {
 export class SelectValidatorDirective {
 }
 
+// Serial Number Validation =======================
 const productSerialNumberValidatorFactory = ( http: Http ) => {
     return ( c: AbstractControl ) => {
         return new Promise( ( resolve, reject ) => {
@@ -72,7 +74,6 @@ const productSerialNumberValidatorFactory = ( http: Http ) => {
     };
 };
 
-// Serial Number Validation
 @Directive( {
     selector : "input[validate-serial-number]",
     providers: [
@@ -83,7 +84,7 @@ export class ProductSerialNumberValidatorDirective {
 }
 
 
-// Start Component
+// Start Component =======================
 @Component( {
     selector: "main",
     // template: `
