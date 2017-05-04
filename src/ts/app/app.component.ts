@@ -1,5 +1,6 @@
 import { Component, ViewChild, AfterViewInit, Directive } from "@angular/core";
-import { NgForm, FormControl, NG_VALIDATORS, FormGroup } from "@angular/forms";
+import { NgForm, FormControl, NG_VALIDATORS, NG_ASYNC_VALIDATORS, FormGroup, AbstractControl } from "@angular/forms";
+import { Http } from "@angular/http";
 
 const phoneValidator = ( c: FormControl ) => {
 
@@ -61,6 +62,28 @@ const preferredContactMethodValidator = ( g: FormGroup ) => {
 export class SelectValidatorDirective {
 }
 
+const productSerialNumberValidatorFactory = ( http: Http ) => {
+    return ( c: AbstractControl ) => {
+        return new Promise( ( resolve, reject ) => {
+            http.get( `http://localhost:3010/products/${encodeURIComponent( c.value )}` )
+                .subscribe( () => resolve( null ), () => resolve( { productSerialNumber: true } ) );
+        } );
+
+    };
+};
+
+// Serial Number Validation
+@Directive( {
+    selector : "input[validate-serial-number]",
+    providers: [
+        { provide: NG_ASYNC_VALIDATORS, useFactory: productSerialNumberValidatorFactory, deps: [ Http ], multi: true },
+    ],
+} )
+export class ProductSerialNumberValidatorDirective {
+}
+
+
+// Start Component
 @Component( {
     selector: "main",
     // template: `
@@ -80,6 +103,16 @@ export class SelectValidatorDirective {
         Please specify a phone number for your primary contact method
         </span>
     </details>
+    
+    <div>
+        <label for="product-serial-number-text">Product Serial Number</label>
+        <input type="text" id="product-serial-number-text" 
+        [(ngModel)]="person.serialNumber" name="serialNumberInput"
+        validate-serial-number required>
+        <span class="valid-message">Validated</span>
+        <span>Error</span>
+    </div>
+
 <fieldset ngModelGroup="personName">
 <div>
     <label for="first-name-input">First Name:</label>
@@ -130,8 +163,15 @@ export class SelectValidatorDirective {
 </form>
 `,
     styles  : [
-        "input.ng-invalid.ng-touched:not(:focus),select.ng-invalid.ng-touched:not(:focus) { border: 1px solid red;}",
-        "input.ng-invalid.ng-touched ~ span, select.ng-invalid.ng-touched ~ span { display: inline;}",
+        `input.ng-invalid.ng-touched:not(:focus),
+        select.ng-invalid.ng-touched:not(:focus) { 
+            border: 1px solid red;
+        }`,
+        `input.ng-invalid.ng-touched ~ span:not(.valid-message), 
+        select.ng-invalid.ng-touched ~ span:not(.valid-message) { 
+            display: inline;
+        }`,
+        "input.ng-valid.ng-touched ~ span.valid-message { display: inline;}",
         "input ~ span, select ~ span { display: none;}",
         // "select { vertical-align: middle;}",
         ".center-me { display: flex; align-items:middle;}",
