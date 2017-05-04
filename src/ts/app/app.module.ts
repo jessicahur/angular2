@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 // import { ColorToolModule } from "./color-tool/color-tool.module";
 // import { CarToolModule } from "./car-tool/car-tool.module";
 
-import { AppComponent, PhoneValidatorDirective } from "./app.component";
+import { AppComponent, PhoneValidatorDirective, SelectValidatorDirective } from "./app.component";
 
 @NgModule( {
     imports     : [ BrowserModule,
@@ -15,7 +15,7 @@ import { AppComponent, PhoneValidatorDirective } from "./app.component";
         //ColorToolModule, CarToolModule,
         //appRouterModule
     ],
-    declarations: [ AppComponent, PhoneValidatorDirective ],
+    declarations: [ AppComponent, PhoneValidatorDirective, SelectValidatorDirective ],
     bootstrap   : [ AppComponent ],
 } )
 export class AppModule {

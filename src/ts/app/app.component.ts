@@ -1,5 +1,5 @@
 import { Component, ViewChild, AfterViewInit, Directive } from "@angular/core";
-import { NgForm, FormControl, NG_VALIDATORS } from "@angular/forms";
+import { NgForm, FormControl, NG_VALIDATORS, FormGroup } from "@angular/forms";
 
 const phoneValidator = ( c: FormControl ) => {
 
@@ -27,6 +27,40 @@ const phoneValidator = ( c: FormControl ) => {
 export class PhoneValidatorDirective {
 }
 
+const preferredContactMethodValidator = ( g: FormGroup ) => {
+
+    if ( ! g.controls.preferredContactMethodSelect ) { // make sure that this box is present
+        return;
+    }
+
+    switch ( g.controls.preferredContactMethodSelect.value ) {
+        case "EMAIL":
+            if ( g.controls.emailInput.value == null || String( g.controls.emailInput.value.length === 0 ) ) {
+                return {
+                    preferredContactMethod: "EMAIL",
+                };
+            }
+        case "PHONE":
+            if ( g.controls.emailInput.value == null || String( g.controls.emailInput.value.length === 0 ) ) {
+                return {
+                    preferredContactMethod: "PHONE",
+                };
+            }
+            break;
+    }
+
+    return null;
+};
+
+@Directive( {
+    selector : "[ngModelGroup][preferred-contact-required]",
+    providers: [
+        { provide: NG_VALIDATORS, useValue: preferredContactMethodValidator, multi: true },
+    ],
+} )
+export class SelectValidatorDirective {
+}
+
 @Component( {
     selector: "main",
     // template: `
@@ -34,6 +68,18 @@ export class PhoneValidatorDirective {
     // `,
     template: `
 <form novalidate>
+    <details *ngIf="personForm.invalid">
+        <summary>There are errors in the person form.</summary>
+        <span *ngIf="personForm.controls.contactDetails.errors && 
+        personForm.controls.contactDetails.errors.preferredContactMethod === 'EMAIL'">
+        Please specify an email for your primary contact method
+        </span>
+        
+        <span *ngIf="personForm.controls.contactDetails.errors && 
+        personForm.controls.contactDetails.errors.preferredContactMethod === 'PHONE'">
+        Please specify a phone number for your primary contact method
+        </span>
+    </details>
 <fieldset ngModelGroup="personName">
 <div>
     <label for="first-name-input">First Name:</label>
@@ -46,7 +92,7 @@ export class PhoneValidatorDirective {
         <span>Last Name is required.</span>
 </div>
 </fieldset>
-<fieldset ngModelGroup="contactDetails">
+<fieldset ngModelGroup="contactDetails" preferred-contact-required>
     <div>
             <label for="email-name-input">Email:</label>
         <input #emailInput="ngModel" type="email" id="email-name-input" name="emailInput" [(ngModel)]="person.email" email>
