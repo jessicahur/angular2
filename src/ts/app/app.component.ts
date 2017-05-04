@@ -83,7 +83,6 @@ const productSerialNumberValidatorFactory = ( http: Http ) => {
 export class ProductSerialNumberValidatorDirective {
 }
 
-
 // Start Component =======================
 @Component( {
     selector: "main",

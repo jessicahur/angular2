@@ -33,7 +33,7 @@ TypeScript & JavaScript topics will be included as needed into the Angular conte
 
 - [Accelebrate, Inc.](https://www.accelebrate.com/)
 - [Eric's Blog](http://t4d.io/)
-- [WintellectNOW](https://www.wintellectnow.com/Home/Instructor?instructorId=EricGreene) - Special Offer Code: GREENE-2016
+- [WintellectNOW](https://www.wintellectnow.com/Home/Instructor?instructorId=EricGreene)
 - [Microsoft Virtual Academy](https://mva.microsoft.com/search/SearchResults.aspx#!q=Eric%20Greene&lang=1033)
 - [React Blog Posts - Post 4 - React Unit Tests](https://github.com/training4developers/react-flux-blog)
 - [TopTal Videos](https://www.toptal.com/videos)
