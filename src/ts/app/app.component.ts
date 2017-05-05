@@ -2,6 +2,8 @@ import { Component, ViewChild, AfterViewInit, Directive } from "@angular/core";
 import { NgForm, FormControl, NG_VALIDATORS, NG_ASYNC_VALIDATORS, FormGroup, AbstractControl } from "@angular/forms";
 import { Http } from "@angular/http";
 
+
+// Phone Validator ===========================
 const phoneValidator = ( c: FormControl ) => {
 
     if ( c.value == null || String( c.value ).length === 0 ) {
